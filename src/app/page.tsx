@@ -46,7 +46,7 @@ const createUserSchema = z.object({
     .nonempty("Pelo menos uma tecnologia é obrigatória")
     .min(2, "Pelo menos duas tecnologias são obrigatórias")
     .refine((techs) => {
-      const techsNames = techs.map((tech) => tech.name.toLowerCase());
+      const techsNames = techs.map((tech) => tech.name.toLowerCase().trim());
       const uniqueTechsNames = new Set(techsNames);
       return techsNames.length === uniqueTechsNames.size;
     }, "Tecnologias duplicadas"),
@@ -79,10 +79,10 @@ export default function Home() {
   }
 
   return (
-    <main className="h-screen bg-zinc-900 text-zinc-300 flex flex-col gap-10 items-center justify-center">
+    <main className="flex flex-col items-center justify-center h-screen gap-10 bg-zinc-900 text-zinc-300">
       <form
         onSubmit={handleSubmit(createUser)}
-        className="flex flex-col gap-4 w-full max-w-md"
+        className="flex flex-col w-full max-w-md gap-4"
       >
         <div className="flex flex-col gap-1">
           <label htmlFor="avatar">Avatar</label>
@@ -93,7 +93,7 @@ export default function Home() {
             {...register("avatar")}
           />
           {errors.avatar && (
-            <span className="text-red-500 text-sm">
+            <span className="text-sm text-red-500">
               {errors.avatar?.message?.toString()}
             </span>
           )}
@@ -104,11 +104,11 @@ export default function Home() {
           <input
             type="text"
             id="name"
-            className="border border-zinc-600 bg-zinc-800 text-white shadow-sm rounded h-10 px-3"
+            className="h-10 px-3 text-white border rounded shadow-sm border-zinc-600 bg-zinc-800"
             {...register("name")}
           />
           {errors.name && (
-            <span className="text-red-500 text-sm">
+            <span className="text-sm text-red-500">
               {errors.name?.message?.toString()}
             </span>
           )}
@@ -119,11 +119,11 @@ export default function Home() {
           <input
             type="email"
             id="email"
-            className="border border-zinc-600 bg-zinc-800 text-white shadow-sm rounded h-10 px-3"
+            className="h-10 px-3 text-white border rounded shadow-sm border-zinc-600 bg-zinc-800"
             {...register("email")}
           />
           {errors.email && (
-            <span className="text-red-500 text-sm">
+            <span className="text-sm text-red-500">
               {errors.email?.message?.toString()}
             </span>
           )}
@@ -134,28 +134,28 @@ export default function Home() {
           <input
             type="password"
             id="password"
-            className="border border-zinc-600 bg-zinc-800 text-white shadow-sm rounded h-10 px-3"
+            className="h-10 px-3 text-white border rounded shadow-sm border-zinc-600 bg-zinc-800"
             {...register("password")}
           />
           {errors.password && (
-            <span className="text-red-500 text-sm">
+            <span className="text-sm text-red-500">
               {errors.password?.message?.toString()}
             </span>
           )}
         </div>
         <div className="flex flex-col gap-3">
-          <label className=" flex items-center justify-between">
+          <label className="flex items-center justify-between ">
             Techs:
             <button
               type="button"
               onClick={() => append({ name: "", knowledge: "basico" })}
-              className="font-semibold text-emerald-500 h-6"
+              className="h-6 font-semibold text-emerald-500"
             >
               Adicionar
             </button>
           </label>
           {errors.techs && (
-            <span className="text-red-500 text-sm">
+            <span className="text-sm text-red-500">
               {errors.techs.message?.toString()}
             </span>
           )}
@@ -164,11 +164,11 @@ export default function Home() {
             <div key={field.id} className="grid grid-cols-3 gap-2">
               <input
                 type="text"
-                className="border border-zinc-600 bg-zinc-800 text-white shadow-sm rounded h-10 px-1"
+                className="h-10 px-1 text-white border rounded shadow-sm border-zinc-600 bg-zinc-800"
                 {...register(`techs.${index}.name` as const)}
               />
               <select
-                className="border border-zinc-600 bg-zinc-800 text-white shadow-sm rounded h-10 px-2"
+                className="h-10 px-2 text-white border rounded shadow-sm border-zinc-600 bg-zinc-800"
                 {...register(`techs.${index}.knowledge` as const)}
               >
                 <option value="basico">Básico</option>
@@ -178,12 +178,12 @@ export default function Home() {
               <button
                 type="button"
                 onClick={() => remove(index)}
-                className="bg-red-500 rounded font-semibold text-white h-10 px-3 hover:bg-red-600"
+                className="h-10 px-3 font-semibold text-white bg-red-500 rounded hover:bg-red-600"
               >
                 Remover
               </button>
               {errors.techs?.[index]?.name && (
-                <span className="text-red-500 text-sm">
+                <span className="text-sm text-red-500">
                   {errors.techs?.[index]?.name?.message?.toString()}
                 </span>
               )}
@@ -193,7 +193,7 @@ export default function Home() {
 
         <button
           type="submit"
-          className="bg-emerald-500 rounded font-semibold text-white h-10 hover:bg-emerald-600"
+          className="h-10 font-semibold text-white rounded bg-emerald-500 hover:bg-emerald-600"
         >
           Save
         </button>
